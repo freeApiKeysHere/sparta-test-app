@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 
 # Provision Sparta test app
 
@@ -18,6 +18,12 @@ echo "Nginx installed."
 echo
 
 # (Optional) You can configure Nginx reverse proxy here, if needed.
+sudo sed -i '/^\s*#*\s*try_files/ {
+s/^\s*#*\s*/        # /
+a\        proxy_pass http://localhost:3000;
+}' /etc/nginx/sites-available/default
+
+
 
 echo "Installing Node.js v20..."
 curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
@@ -44,6 +50,10 @@ echo
 echo "Installing app dependencies..."
 npm install --no-fund --no-audit
 echo "Dependencies installed."
+echo
+
+echo "Stopping app"
+pm2 stop all
 echo
 
 echo "Starting app using PM2..."

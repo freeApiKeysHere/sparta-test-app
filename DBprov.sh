@@ -17,7 +17,7 @@ echo "Key imported."
 echo
 
 echo "Creating MongoDB repo source list..."
-echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.o>
+echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | \
    sudo tee /etc/apt/sources.list.d/mongodb-org-7.0.list
 echo "Repo added."
 echo
@@ -42,3 +42,12 @@ echo
 
 echo "Configuring mongod to listen on all interfaces..."
 sudo sed -i 's/bindIp: 127.0.0.1/bindIp: 0.0.0.0/' /etc/mongod.conf
+echo "bindIp updated."
+echo
+
+echo "Starting and enabling MongoDB service..."
+sudo systemctl start mongod
+sudo systemctl enable mongod
+sudo systemctl restart mongod
+echo "MongoDB is running and enabled on boot."
+echo
